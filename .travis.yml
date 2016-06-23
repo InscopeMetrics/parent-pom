@@ -9,7 +9,7 @@ env:
   - JDKW=https://raw.githubusercontent.com/vjkoskela/jdk-wrapper/master/jdk-wrapper.sh
 install: true
 before_script:
-#- gpg --import ism.key
+- gpg --import ism.key
 - if [ \( -n "${TRAVIS_TAG}" \) -a  "${TRAVIS_PULL_REQUEST}" = "false" ]; then export TARGET="deploy -P release"; fi;
 script:
 - curl -s ${JDKW} | bash /dev/stdin ./mvnw clean ${TARGET} --settings settings.xml -U

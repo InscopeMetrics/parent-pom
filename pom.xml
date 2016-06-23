@@ -74,8 +74,13 @@
           <artifactId>maven-gpg-plugin</artifactId>
           <executions>
             <execution>
+              <id>sign-artifacts</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>sign</goal>
+              </goals>
               <configuration>
-                <keyname>ism</keyname>
+                <keyname>Inscope Metrics</keyname>
                 <passphraseServerId>ism</passphraseServerId>
               </configuration>
             </execution>
