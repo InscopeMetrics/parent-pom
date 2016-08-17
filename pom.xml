@@ -25,7 +25,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.inscopemetrics.build</groupId>
   <artifactId>parent-pom</artifactId>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
   <name>Inscope Metrics Parent Pom</name>
   <description>Parent Pom for Inscope Metrics Projects.</description>
   <url>https://github.com/InscopeMetrics/parent-pom</url>
