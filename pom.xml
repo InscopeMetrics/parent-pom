@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  ~ Copyright 2016 Inscope Metrics Incorporated
+  ~ Copyright 2018 Inscope Metrics Incorporated
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,12 +15,6 @@
   ~ limitations under the License.
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent>
-    <groupId>com.arpnetworking.build</groupId>
-    <artifactId>arpnetworking-parent-pom</artifactId>
-    <version>1.1.0</version>
-    <relativePath />
-  </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.inscopemetrics.build</groupId>
@@ -29,7 +23,7 @@
   <name>Inscope Metrics Parent Pom</name>
   <description>Parent Pom for Inscope Metrics Projects.</description>
   <url>https://github.com/InscopeMetrics/parent-pom</url>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>2.0.0-SNAPSHOT</version>
 
   <licenses>
     <license>
@@ -66,27 +60,767 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- JDK -->
+    <jdk.version>1.8.0-162</jdk.version>
+
+    <!-- Maven Wrapper -->
+    <maven.version>3.5.2</maven.version>
+    <maven.base.distribution.url>https://repo1.maven.org/maven2/org/apache/maven/apache-maven/</maven.base.distribution.url>
+
+    <!-- Compiler Settings -->
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
+    <!-- Dependency Versions -->
+    <build.resources.version>1.0.2</build.resources.version>
+    <checkstyle.version>8.7</checkstyle.version>
+
+    <!-- Plugin Versions -->
+    <appassembler.maven.plugin.version>2.0.0</appassembler.maven.plugin.version>
+    <maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
+    <maven.checkstyle.plugin.version>3.0.0</maven.checkstyle.plugin.version>
+    <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
+    <maven.compiler.plugin.version>3.6.2</maven.compiler.plugin.version>
+    <maven.dependency.plugin.version>3.0.1</maven.dependency.plugin.version>
+    <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
+    <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
+    <maven.failsafe.plugin.version>2.20</maven.failsafe.plugin.version>
+    <maven.findbugs.plugin.version>3.0.5</maven.findbugs.plugin.version>
+    <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
+    <maven.install.plugin.version>2.2</maven.install.plugin.version>
+    <maven.jacoco.plugin.version>0.7.9</maven.jacoco.plugin.version>
+    <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
+    <maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
+    <maven.project.info.reports.plugin.version>2.9</maven.project.info.reports.plugin.version>
+    <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+    <maven.resources.plugin.version>3.0.2</maven.resources.plugin.version>
+    <maven.site.plugin.version>3.6</maven.site.plugin.version>
+    <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
+    <maven.surefire.plugin.version>2.20</maven.surefire.plugin.version>
+    <maven.surefire.report.plugin.version>2.20</maven.surefire.report.plugin.version>
+    <maven.versions.plugin.version>2.5</maven.versions.plugin.version>
+    <maven.wrapper.plugin.version>0.0.5</maven.wrapper.plugin.version>
+    <nexus.staging.plugin.version>1.6.8</nexus.staging.plugin.version>
+
+    <!-- Checkstyle -->
+    <checkstyleExtraSuppressions>${project.build.directory}/build-resources/extra-checkstyle-suppressions.xml</checkstyleExtraSuppressions>
+    <checkstyleFailOnViolation>true</checkstyleFailOnViolation>
+    <checkstyleConfiguration>${project.build.directory}/build-resources/checkstyle.xml</checkstyleConfiguration>
+    <checkstyleSuppressions>${project.build.directory}/build-resources/checkstyle-suppressions.xml</checkstyleSuppressions>
+
+    <!-- Findbugs -->
+    <findbugsExclude>${project.build.directory}/build-resources/findbugs.exclude.xml</findbugsExclude>
+    <findbugsFailOnViolation>true</findbugsFailOnViolation>
+
+    <!-- Code Coverage -->
+    <jacoco.check.line.coverage>1.0</jacoco.check.line.coverage>
+    <jacoco.check.branch.coverage>1.0</jacoco.check.branch.coverage>
+    <jacoco.check.cyclomatic.complexity>10.0</jacoco.check.cyclomatic.complexity>
+
+    <!-- Deploy Plugin -->
+    <!-- NOTE: True by default to faciliate use of nexus-staging-maven-plugin -->
+    <skipDeploy>true</skipDeploy>
+
+    <!-- Verification Knobs -->
+    <skipAllVerification>false</skipAllVerification>
+    <skipUnitTests>false</skipUnitTests>
+    <skipIntegrationTests>false</skipIntegrationTests>
+    <skipFindbugs>false</skipFindbugs>
+    <skipCheckstyle>false</skipCheckstyle>
+    <skipCoverage>false</skipCoverage>
+
+    <!-- Additional Knobs -->
+    <skipJavaDoc>false</skipJavaDoc>
+    <skipSource>false</skipSource>
+    <skipEnforceMaven>false</skipEnforceMaven>
+    <skipEnforceJdk>false</skipEnforceJdk>
+    <skipEnforceLinux>false</skipEnforceLinux>
+    <skipEnforceNoSnapshotsOnRelease>false</skipEnforceNoSnapshotsOnRelease>
+  </properties>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>enforce</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireReleaseDeps />
+                  </rules>
+                  <skip>${skipEnforceNoSnapshotsOnRelease}</skip>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+                <configuration>
+                  <keyname>Inscope Metrics</keyname>
+                  <passphraseServerId>ism</passphraseServerId>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>${nexus.staging.plugin.version}</version>
+            <executions>
+              <execution>
+                <id>default-deploy</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>deploy</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <serverId>ossrh</serverId>
+              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>true</autoReleaseAfterClose>
+              <keepStagingRepositoryOnFailure>true</keepStagingRepositoryOnFailure>
+              <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
+              <description>Project ${project.groupId}:${project.artifactId}:${project.version} at ${buildNumber}</description>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>skipAllVerification</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>skipAllVerification</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <properties>
+        <skipUnitTests>true</skipUnitTests>
+        <skipIntegrationTests>true</skipIntegrationTests>
+        <skipFindbugs>true</skipFindbugs>
+        <skipCheckstyle>true</skipCheckstyle>
+        <skipCoverage>true</skipCoverage>
+      </properties>
+    </profile>
+    <profile>
+      <id>verifyCheckstyleOnly</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>verifyCheckstyleOnly</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <properties>
+        <skipUnitTests>true</skipUnitTests>
+        <skipIntegrationTests>true</skipIntegrationTests>
+        <skipFindbugs>true</skipFindbugs>
+        <skipCoverage>true</skipCoverage>
+        <skipJavaDoc>true</skipJavaDoc>
+        <skipSource>true</skipSource>
+      </properties>
+    </profile>
+    <profile>
+      <id>verifyFindbugsOnly</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>verifyFindbugsOnly</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <properties>
+        <skipUnitTests>true</skipUnitTests>
+        <skipIntegrationTests>true</skipIntegrationTests>
+        <skipCheckstyle>true</skipCheckstyle>
+        <skipCoverage>true</skipCoverage>
+        <skipJavaDoc>true</skipJavaDoc>
+        <skipSource>true</skipSource>
+      </properties>
+    </profile>
+    <profile>
+      <id>verifyCoverageOnly</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>verifyCoverageOnly</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <properties>
+        <skipIntegrationTests>true</skipIntegrationTests>
+        <skipFindbugs>true</skipFindbugs>
+        <skipCheckstyle>true</skipCheckstyle>
+        <skipJavaDoc>true</skipJavaDoc>
+        <skipSource>true</skipSource>
+      </properties>
+    </profile>
+    <profile>
+      <id>verifyIntegrationTestsOnly</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>verifyIntegrationTestsOnly</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <properties>
+        <skipUnitTests>true</skipUnitTests>
+        <skipFindbugs>true</skipFindbugs>
+        <skipCheckstyle>true</skipCheckstyle>
+        <skipCoverage>true</skipCoverage>
+        <skipJavaDoc>true</skipJavaDoc>
+        <skipSource>true</skipSource>
+      </properties>
+    </profile>
+  </profiles>
+
   <build>
     <pluginManagement>
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.plugin.version}</version>
+          <configuration>
+            <showDeprecation>true</showDeprecation>
+            <showWarnings>true</showWarnings>
+            <compilerArgs>
+              <arg>-Werror</arg>
+              <arg>-Xlint:all</arg>
+              <arg>-Xlint:-processing</arg>
+            </compilerArgs>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>${maven.dependency.plugin.version}</version>
           <executions>
             <execution>
-              <id>sign-artifacts</id>
+              <id>analyze</id>
               <phase>verify</phase>
               <goals>
-                <goal>sign</goal>
+                <goal>analyze-only</goal>
               </goals>
               <configuration>
-                <keyname>Inscope Metrics</keyname>
-                <passphraseServerId>ism</passphraseServerId>
+                <failOnWarning>true</failOnWarning>
+                <ignoreNonCompile>true</ignoreNonCompile>
+                <ignoredDependencies>
+                  <ignoredDependency>com.inscopemetrics.build:build-resources:jar:*</ignoredDependency>
+                </ignoredDependencies>
               </configuration>
             </execution>
           </executions>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven.jar.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven.resources.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven.clean.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${maven.install.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${maven.site.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>appassembler-maven-plugin</artifactId>
+          <version>${appassembler.maven.plugin.version}</version>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>assemble</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <repositoryLayout>flat</repositoryLayout>
+            <repositoryName>lib</repositoryName>
+            <unixScriptTemplate>${project.basedir}/target/build-resources/unixBinTemplate</unixScriptTemplate>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven.surefire.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>default-test</id>
+              <phase>test</phase>
+              <goals>
+                <goal>test</goal>
+              </goals>
+              <configuration>
+                <skipTests>${skipUnitTests}</skipTests>
+                <parallel>methods</parallel>
+                <threadCount>4</threadCount>
+                <perCoreThreadCount>true</perCoreThreadCount>
+                <trimStackTrace>false</trimStackTrace>
+                <argLine>${surefireArgLine} -Xms512m -ea -Duser.timezone="UTC"</argLine>
+                <includes>
+                  <include>**/Test*.java</include>
+                  <include>**/*Test.java</include>
+                  <include>**/*TestCase.java</include>
+                </includes>
+                <redirectTestOutputToFile>true</redirectTestOutputToFile>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-report-plugin</artifactId>
+          <version>${maven.surefire.report.plugin.version}</version>
+          <configuration>
+            <skipFailsafeReport>${skipIntegrationTests}</skipFailsafeReport>
+            <skipSurefireReport>${skipUnitTests}</skipSurefireReport>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>${maven.failsafe.plugin.version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <skipTests>${skipIntegrationTests}</skipTests>
+            <includes>
+              <include>**/IT*.java</include>
+              <include>**/*IT.java</include>
+              <include>**/*ITCase.java</include>
+            </includes>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${maven.checkstyle.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>default-check</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <configuration>
+                <skip>${skipCheckstyle}</skip>
+              </configuration>
+            </execution>
+          </executions>
+          <configuration>
+            <consoleOutput>true</consoleOutput>
+            <logViolationsToConsole>true</logViolationsToConsole>
+            <failOnViolation>${checkstyleFailOnViolation}</failOnViolation>
+            <configLocation>${checkstyleConfiguration}</configLocation>
+            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+            <suppressionsFileExpression>suppressions_file</suppressionsFileExpression>
+            <suppressionsLocation>${checkstyleSuppressions}</suppressionsLocation>
+            <propertyExpansion>
+              extra_suppressions_file=${checkstyleExtraSuppressions}
+              header_file=${project.build.directory}/build-resources/al2.header
+            </propertyExpansion>
+            <linkXRef>false</linkXRef>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>${checkstyle.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>com.inscopemetrics.build</groupId>
+              <artifactId>build-resources</artifactId>
+              <version>${build.resources.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>findbugs-maven-plugin</artifactId>
+          <version>${maven.findbugs.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>findbugs-check</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <skip>${skipFindbugs}</skip>
+            <effort>Max</effort>
+            <threshold>Low</threshold>
+            <failOnError>${findbugsFailOnViolation}</failOnError>
+            <includeTests>true</includeTests>
+            <xmlOutput>true</xmlOutput>
+            <xmlOutputDirectory>${project.build.directory}</xmlOutputDirectory>
+            <excludeFilterFile>${findbugsExclude}</excludeFilterFile>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>${maven.jacoco.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>default-prepare-agent</id>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+              <configuration>
+                <skip>${skipCoverage}</skip>
+                <propertyName>surefireArgLine</propertyName>
+              </configuration>
+            </execution>
+            <execution>
+              <id>default-report</id>
+              <goals>
+                <goal>report</goal>
+              </goals>
+              <configuration>
+                <skip>${skipCoverage}</skip>
+              </configuration>
+            </execution>
+            <execution>
+              <id>default-check</id>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <configuration>
+                <skip>${skipCoverage}</skip>
+                <rules>
+                  <rule>
+                    <element>BUNDLE</element>
+                    <limits>
+                      <limit>
+                        <counter>LINE</counter>
+                        <value>COVEREDRATIO</value>
+                        <minimum>${jacoco.check.line.coverage}</minimum>
+                      </limit>
+                      <limit>
+                        <counter>BRANCH</counter>
+                        <value>COVEREDRATIO</value>
+                        <minimum>${jacoco.check.branch.coverage}</minimum>
+                      </limit>
+                    </limits>
+                  </rule>
+                  <rule>
+                    <element>METHOD</element>
+                    <limits>
+                      <limit>
+                        <counter>COMPLEXITY</counter>
+                        <value>TOTALCOUNT</value>
+                        <maximum>${jacoco.check.cyclomatic.complexity}</maximum>
+                      </limit>
+                    </limits>
+                  </rule>
+                </rules>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>buildnumber-maven-plugin</artifactId>
+          <version>${maven.buildnumber.plugin.version}</version>
+          <executions>
+            <execution>
+              <phase>validate</phase>
+              <goals>
+                <goal>create</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <revisionOnScmFailure>UNKNOWN</revisionOnScmFailure>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven.release.plugin.version}</version>
+          <configuration>
+            <allowTimestampedSnapshots>${skipEnforceNoSnapshotsOnRelease}</allowTimestampedSnapshots>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${maven.deploy.plugin.version}</version>
+          <configuration>
+            <skip>${skipDeploy}</skip>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${maven.source.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+              <configuration>
+                <skipSource>${skipSource}</skipSource>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven.javadoc.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>attach-javadocs</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+              <configuration>
+                <skip>${skipJavaDoc}</skip>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>com.rimerosolutions.maven.plugins</groupId>
+          <artifactId>wrapper-maven-plugin</artifactId>
+          <version>${maven.wrapper.plugin.version}</version>
+          <configuration>
+            <baseDistributionUrlList>
+              <baseDistributionUrl>${maven.base.distribution.url}</baseDistributionUrl>
+            </baseDistributionUrlList>
+            <mavenVersion>${maven.version}</mavenVersion>
+            <verifyDownload>true</verifyDownload>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>${maven.enforcer.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>enforce-maven</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <configuration>
+                <rules>
+                  <requireMavenVersion>
+                    <version>[${maven.version}]</version>
+                  </requireMavenVersion>
+                </rules>
+                <skip>${skipEnforceMaven}</skip>
+              </configuration>
+            </execution>
+            <execution>
+              <id>enforce-jdk</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <configuration>
+                <rules>
+                  <requireJavaVersion>
+                    <version>[${jdk.version}]</version>
+                  </requireJavaVersion>
+                </rules>
+                <skip>${skipEnforceJdk}</skip>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>${maven.versions.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>default-display-dependency-updates</id>
+              <goals>
+                <goal>display-dependency-updates</goal>
+              </goals>
+              <phase>validate</phase>
+            </execution>
+            <!-- TODO: Enable me once Maven 3.5 compatibility is achieved.
+                 See: https://github.com/mojohaus/versions-maven-plugin/issues/48
+            <execution>
+              <id>default-display-plugin-updates</id>
+              <goals>
+                <goal>display-plugin-updates</goal>
+              </goals>
+              <phase>validate</phase>
+            </execution>
+            -->
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>com.rimerosolutions.maven.plugins</groupId>
+        <artifactId>wrapper-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack-build-resources</id>
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <outputDirectory>${project.build.directory}/build-resources</outputDirectory>
+              <includeArtifactIds>build-resources</includeArtifactIds>
+              <includeGroupIds>com.inscopemetrics.build</includeGroupIds>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${maven.project.info.reports.plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${maven.checkstyle.plugin.version}</version>
+        <configuration>
+          <consoleOutput>false</consoleOutput>
+          <logViolationsToConsole>false</logViolationsToConsole>
+          <failOnViolation>false</failOnViolation>
+          <configLocation>checkstyle.xml</configLocation>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <suppressionsFileExpression>suppressions_file</suppressionsFileExpression>
+          <suppressionsLocation>${checkstyleSuppressions}</suppressionsLocation>
+          <propertyExpansion>
+            extra_suppressions_file=${checkstyleExtraSuppressions}
+            header_file=${project.build.directory}/build-resources/al2.header
+          </propertyExpansion>
+          <linkXRef>false</linkXRef>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.inscopemetrics.build</groupId>
+      <artifactId>build-resources</artifactId>
+      <version>${build.resources.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <distributionManagement>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>

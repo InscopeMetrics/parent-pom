@@ -26,7 +26,7 @@ Determine the latest version of the parent pom in [Maven Central](http://search.
 
 #### Maven
 
-Set the parent to your pom:
+Set the parent to your _pom.xml_ file:
 
 ```xml
 <parent>
@@ -38,13 +38,65 @@ Set the parent to your pom:
 
 The Maven Central repository is included by default.
 
-### Maven and JDK Wrappers
+### Configure JDK Wrapper
 
-The parent pom enables the use of [Maven Wrapper](https://github.com/rimerosolutions/maven-wrapper) in child projects and it also uses Maven Wrapper itself. In order to ensure consistent builds you should invoke __mvnw__ instead of __mvn__ to build the project locally and from continuous integration.
+The [JDK Wrapper](https://github.com/vjkoskela/jdk-wrapper) ensures that the same version of the JDK is used in all 
+builds. Although you are not required the JDK Wrapper, it is strongly recommended.
 
-Furthermore, this project uses [JDK Wrapper](https://github.com/vjkoskela/jdk-wrapper). Invocations of __mvnw__ should be wrapped by invoking __jdk-wrapper.sh__. The use of JDK Wrapper in child projects is strongly encouraged.
+To specify the version of the JDK to use create a _.jdkw_ file with the following content:
 
-To allow developers to build wrapped and unwrapped projects seamlessly you can use this shell script to invoke either __mvnw__ or __mvn__ and automatically wrap in __jdk-wrapper.sh__ as necessary. Simply copy the script, make it executable and ensure it is first on __PATH__. Now continue to invoke __mvn__ and it will actually run __mvnw__ and __jdk-wrapper.sh__ as necessary in the current project.
+```
+JDKW_VERSION=8u152
+JDKW_BUILD=b16
+JDKW_TOKEN=aa0333dd3019491ca4f6ddbe78cdb6d0
+```
+
+The parent pom configures the version of JDK to require, typically the latest available, but the version may
+be overridden in the _properties_ section of your project's _pom.xml_ and __must__ match the version in _.jdkw_; for
+example:
+
+```xml
+<jdk.version>1.8.0-152</jdk.version>
+```
+
+The enforcement is performed by Maven's [Enforcer Plugin](https://maven.apache.org/enforcer/enforcer-rules/requireJavaVersion.html). More 
+details on how to install and configure JDK Wrapper can be found in that project's [README](https://github.com/vjkoskela/jdk-wrapper/blob/master/README.md) file.
+
+### Configure Maven Wrapper
+
+The [Maven Wrapper](https://github.com/rimerosolutions/maven-wrapper) ensures that the same version of Maven is used in
+all builds. To _configure_ Maven Wrapper in your project:
+
+```
+> mvn wrapper:wrapper
+```
+
+The parent pom configures the version of Maven to use, typically the latest available, but the version may
+be overridden in the _properties_ section of your project's _pom.xml_; for example:
+
+```xml
+<maven.version>3.5.2</maven.version>
+```
+
+To _update_ Maven Wrapper in your project (e.g. after upgrading the parent pom or changing the desired version in your _pom.xml_):
+
+```
+> mvn wrapper:wrapper
+```
+
+However, as you can see bootstrapping Maven Wrapper in a new project requires a version of Maven to be installed. On a Mac, you can install Maven
+with [Homebrew](http://brew.sh/):
+
+```
+> brew install maven
+```
+
+### Wrapper Script
+
+To allow developers to build wrapped and unwrapped projects seamlessly you can use this shell script to invoke either 
+__mvnw__ or __mvn__ and automatically wrap in __jdk-wrapper.sh__ as necessary. Simply copy the script, make it 
+executable and ensure it is first on __PATH__. Now continue to invoke __mvn__ and it will actually run __mvnw__ and 
+__jdk-wrapper.sh__ as necessary in the current project.
 
 ```bash
 #!/bin/bash
@@ -80,27 +132,86 @@ eval "${MVN_COMMAND}" "$@"
 exit $?
 ```
 
-Please note that your environment should have JAVA_HOME set correctly.
+Usage
+-----
+
+Only execute integration tests goals during the verify lifecycle:
+```
+> mvn -DverifyIntegrationTestsOnly=true verify
+```
+
+Only execute Checkstyle goals during the verify lifecycle:
+```
+> mvn -DverifyCheckstyleOnly=true verify
+```
+
+Only execute Findbugs goals during the verify lifecycle:
+```
+> mvn -DverifyFindbugsOnly=true verify
+```
+
+Only execute code coverage goals during the verify lifecycle:
+```
+> mvn -DverifyCoverageOnly=true verify
+```
+
+Disable enforcing the Maven version:
+```
+> mvn -DskipEnforceMaven=true verify
+```
+
+Disable enforcing the JDK version:
+```
+> mvn -DskipEnforceJdk=true verify
+```
+
+Disable enforcing no snapshot versions on release (strongly __not__ recommended):
+```
+> mvn -DskipEnforceNoSnapshotsOnRelease=true verify
+```
 
 Building
 --------
 
 Prerequisites:
-* [JDK8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) (Or Invoke with JDKW)
+* [JDK8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) (Or Invoke with [JDK Wrapper](https://github.com/vjkoskela/jdk-wrapper))
 
 Building:
 
-    parent-pom> ./mvnw verify
+```
+> mvn verify
+```
 
 To use the local version you must first install it locally:
 
-    parent-pom> ./mvnw install
+```
+> mvn install
+```
 
 You can determine the version of the local build from the pom file.  Using the local version is intended only for testing or development.
+
+Releasing
+---------
+
+This project is versioned using [semantic versioning](http://semver.org/) please consult the commit history to determine
+the next appropriate release version. Next, simply invoke the Maven Release plugin which will interactively query for the
+version of the artifact to release:
+
+```
+> mvn release:prepare && mvn release:clean && git pull
+```
+
+The plugin will update the version and SCM tag in _pom.xml_ automatically based on your input and then commit the changes
+to source control. When releasing the build system (e.g. [Travis](travis-ci.org)) must execute the _deploy_ lifecycle, 
+enable the _release_ profile, and provide the _settings.xml_ file:
+
+```
+> mvn deploy -P release --settings settings.xml
+```
 
 License
 -------
 
 Published under Apache Software License 2.0, see LICENSE
 
-&copy; Inscope Metrics Incorporated, 2016
+&copy; Inscope Metrics Incorporated, 2018
