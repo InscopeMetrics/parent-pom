@@ -40,12 +40,13 @@ The Maven Central repository is included by default.
 
 ### Configure JDK Wrapper
 
-The [JDK Wrapper](https://github.com/vjkoskela/jdk-wrapper) ensures that the same version of the JDK is used in all 
+The [JDK Wrapper](https://github.com/KoskiLabs/jdk-wrapper) ensures that the same version of the JDK is used in all 
 builds. Although you are not required the JDK Wrapper, it is strongly recommended.
 
 To specify the version of the JDK to use create a _.jdkw_ file with the following content:
 
 ```
+JDKW_DIST=oracle
 JDKW_VERSION=8u152
 JDKW_BUILD=b16
 JDKW_TOKEN=aa0333dd3019491ca4f6ddbe78cdb6d0
@@ -60,7 +61,7 @@ example:
 ```
 
 The enforcement is performed by Maven's [Enforcer Plugin](https://maven.apache.org/enforcer/enforcer-rules/requireJavaVersion.html). More 
-details on how to install and configure JDK Wrapper can be found in that project's [README](https://github.com/vjkoskela/jdk-wrapper/blob/master/README.md) file.
+details on how to install and configure JDK Wrapper can be found in that project's [README](https://github.com/KoskiLabs/jdk-wrapper/blob/master/README.md) file.
 
 ### Configure Maven Wrapper
 
@@ -114,7 +115,9 @@ else
 fi
 
 # Look for jdk wrapper
-if [ -f ".jdkw" ]; then
+if [ -f "jdk-wrapper.sh" ]; then
+  MVN_COMMAND="./jdk-wrapper.sh ${JDKW_OPTIONS} ${MVN_COMMAND}"
+elif [ -f ".jdkw" ]; then
   JDKW_REMOTE="https://raw.githubusercontent.com/vjkoskela/jdk-wrapper/master/jdk-wrapper.sh"
   JDKW_LOCAL="${HOME}/.jdk/jdk-wrapper.sh"
   mkdir -p "$(dirname "${JDKW_LOCAL}")"
@@ -174,7 +177,7 @@ Building
 --------
 
 Prerequisites:
-* [JDK8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) (Or Invoke with [JDK Wrapper](https://github.com/vjkoskela/jdk-wrapper))
+* [JDK8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) (Or Invoke with [JDK Wrapper](https://github.com/KoskiLabs/jdk-wrapper))
 
 Building:
 
@@ -185,7 +188,7 @@ Building:
 To use the local version you must first install it locally:
 
 ```
-> mvn install
+> .mvn install
 ```
 
 You can determine the version of the local build from the pom file.  Using the local version is intended only for testing or development.
