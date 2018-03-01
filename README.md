@@ -188,7 +188,7 @@ Building:
 To use the local version you must first install it locally:
 
 ```
-> .mvn install
+> mvn install
 ```
 
 You can determine the version of the local build from the pom file.  Using the local version is intended only for testing or development.
@@ -211,6 +211,8 @@ enable the _release_ profile, and provide the _settings.xml_ file:
 ```
 > mvn deploy -P release --settings settings.xml
 ```
+
+The commands listed above assume you are using the wrapper described earlier in this file. If you are not, then substitute `mvn` with `./jdk-wrapper.sh ./mvnw`.
 
 License
 -------
