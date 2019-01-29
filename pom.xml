@@ -436,6 +436,9 @@
           </executions>
           <configuration>
             <skipTests>${skipIntegrationTests}</skipTests>
+            <parallel>all</parallel>
+            <perCoreThreadCount>true</perCoreThreadCount>
+            <threadCount>2</threadCount>
             <includes>
               <include>**/IT*.java</include>
               <include>**/*IT.java</include>
