@@ -148,9 +148,9 @@ Only execute Checkstyle goals during the verify lifecycle:
 > mvn -DverifyCheckstyleOnly=true verify
 ```
 
-Only execute Findbugs goals during the verify lifecycle:
+Only execute Spotbugs goals during the verify lifecycle:
 ```
-> mvn -DverifyFindbugsOnly=true verify
+> mvn -DverifySpotbugsOnly=true verify
 ```
 
 Only execute code coverage goals during the verify lifecycle:
