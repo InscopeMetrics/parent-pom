@@ -720,7 +720,7 @@
             <execution>
               <goals>
                 <goal>display-dependency-updates</goal>
-                <goal>display-plugin-updates</goal>
+                <!--<goal>display-plugin-updates</goal>-->
               </goals>
               <phase>verify</phase>
             </execution>
