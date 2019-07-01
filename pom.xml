@@ -76,10 +76,7 @@
     <maven.compiler.target>1.8</maven.compiler.target>
 
     <!-- Dependency Versions -->
-    <!-- TODO Release with: -->
-    <build.resources.version>2.0.1</build.resources.version>
-    <!-- TODO Post release with: -->
-    <!--<build.resources.version>2.0.2-SNAPSHOT</build.resources.version>-->
+    <build.resources.version>2.0.2</build.resources.version>
     <checkstyle.version>8.22</checkstyle.version>
     <spotbugs.version>3.1.12</spotbugs.version>
 
@@ -179,6 +176,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
+            <version>${maven.gpg.plugin.version}</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -340,7 +338,7 @@
                 <failOnWarning>true</failOnWarning>
                 <ignoreNonCompile>true</ignoreNonCompile>
                 <ignoredDependencies>
-                  <ignoredDependency>com.inscopemetrics.build:build-resources:jar:*</ignoredDependency>
+                  <ignoredDependency>io.inscopemetrics.build:build-resources:jar:*</ignoredDependency>
                 </ignoredDependencies>
               </configuration>
             </execution>
@@ -487,10 +485,7 @@
               <version>${checkstyle.version}</version>
             </dependency>
             <dependency>
-              <!-- TODO: Release with: -->
-              <groupId>com.inscopemetrics.build</groupId>
-              <!-- TODO: Post release with: -->
-              <!--<groupId>io.inscopemetrics.build</groupId>-->
+              <groupId>io.inscopemetrics.build</groupId>
               <artifactId>build-resources</artifactId>
               <version>${build.resources.version}</version>
             </dependency>
@@ -648,6 +643,7 @@
                 <goal>jar</goal>
               </goals>
               <configuration>
+                <quiet>true</quiet>
                 <skip>${skipJavaDoc}</skip>
               </configuration>
             </execution>
@@ -786,7 +782,7 @@
             <configuration>
               <outputDirectory>${project.build.directory}/build-resources</outputDirectory>
               <includeArtifactIds>build-resources</includeArtifactIds>
-              <includeGroupIds>com.inscopemetrics.build</includeGroupIds>
+              <includeGroupIds>io.inscopemetrics.build</includeGroupIds>
             </configuration>
           </execution>
         </executions>
@@ -825,10 +821,7 @@
 
   <dependencies>
     <dependency>
-      <!-- TODO: Release with: -->
-      <groupId>com.inscopemetrics.build</groupId>
-      <!-- TODO: Post release with: -->
-      <!-- <groupId>io.inscopemetrics.build</groupId> -->
+      <groupId>io.inscopemetrics.build</groupId>
       <artifactId>build-resources</artifactId>
       <version>${build.resources.version}</version>
       <scope>provided</scope>
