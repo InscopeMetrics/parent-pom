@@ -441,6 +441,7 @@
             <parallel>all</parallel>
             <perCoreThreadCount>true</perCoreThreadCount>
             <threadCount>2</threadCount>
+            <trimStackTrace>false</trimStackTrace>
             <includes>
               <include>**/IT*.java</include>
               <include>**/*IT.java</include>
