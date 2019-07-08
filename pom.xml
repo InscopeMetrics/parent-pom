@@ -304,6 +304,31 @@
         <skipSource>true</skipSource>
       </properties>
     </profile>
+    <profile>
+      <id>displayPluginUpdates</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>!env.TRAVIS</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>versions-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <!-- TODO(ville): This plugin updates goal does not work in Travis and is disabled with this profile. -->
+                  <goal>display-plugin-updates</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
   <build>
@@ -720,13 +745,6 @@
               </goals>
               <phase>verify</phase>
             </execution>
-            <execution>
-              <goals>
-                <!-- TODO(ville): This plugin updates goal does not work in Travis and is disabled with a profile. -->
-                <goal>display-plugin-updates</goal>
-              </goals>
-              <phase>verify</phase>
-            </execution>
           </executions>
         </plugin>
       </plugins>
@@ -796,35 +814,6 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-        <property>
-          <name>TRAVIS</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>versions-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <!-- TODO(ville): This plugin updates goal does not work in Travis and is disabled with this profile. -->
-                  <goal>display-plugin-updates</goal>
-                </goals>
-                <phase>null</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
   <reporting>
     <plugins>
