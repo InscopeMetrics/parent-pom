@@ -10,4 +10,8 @@ Inscope Metrics Parent POM
 
 2.0.5 - June 30, 2019
 ------------------------
-* Initial release to `io.inscopemetrics.build`.
+* Initial release to `io.inscopemetrics.build:parent-pom`.
+
+Published under Apache Software License 2.0, see LICENSE
+
+&copy; Inscope Metrics, 2019
