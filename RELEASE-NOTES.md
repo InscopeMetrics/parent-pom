@@ -3,7 +3,8 @@ Inscope Metrics Parent POM
 
 2.2.0 - TBD
 ------------------------
-* _TBD_
+* Updated Findbugs and Checkstyle.
+* Latest build-resources.
 
 2.1.0 - July 15, 2019
 ------------------------
