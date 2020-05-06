@@ -76,20 +76,20 @@
     <maven.compiler.target>1.8</maven.compiler.target>
 
     <!-- Dependency Versions -->
-    <build.resources.version>2.0.3</build.resources.version>
-    <checkstyle.version>8.22</checkstyle.version>
-    <spotbugs.version>3.1.12</spotbugs.version>
+    <build.resources.version>2.0.4</build.resources.version>
+    <checkstyle.version>8.32</checkstyle.version>
+    <spotbugs.version>4.0.2</spotbugs.version>
 
     <!-- Plugin Versions -->
     <appassembler.maven.plugin.version>2.1.0</appassembler.maven.plugin.version>
     <maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
-    <maven.checkstyle.plugin.version>3.1.0</maven.checkstyle.plugin.version>
+    <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
     <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
     <maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
     <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
     <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
-    <maven.failsafe.plugin.version>2.22.1</maven.failsafe.plugin.version>
+    <maven.failsafe.plugin.version>2.22.2</maven.failsafe.plugin.version>
     <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
     <maven.install.plugin.version>2.5.2</maven.install.plugin.version>
     <maven.jacoco.plugin.version>0.8.4</maven.jacoco.plugin.version>
@@ -208,6 +208,7 @@
               <serverId>ossrh</serverId>
               <nexusUrl>https://oss.sonatype.org/</nexusUrl>
               <autoReleaseAfterClose>true</autoReleaseAfterClose>
+              <stagingProgressTimeoutMinutes>15</stagingProgressTimeoutMinutes>
               <keepStagingRepositoryOnFailure>true</keepStagingRepositoryOnFailure>
               <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
               <description>Project ${project.groupId}:${project.artifactId}:${project.version} at ${buildNumber}</description>
