@@ -3,8 +3,10 @@ Inscope Metrics Parent POM
 
 2.2.0 - TBD
 ------------------------
-* Updated Findbugs and Checkstyle.
-* Latest build-resources.
+* Updated Spotbugs, Checkstyle and Failsafe.
+* Latest build-resources with new Checkstyle rules.
+* Maven Central as mirror on Travis builds (via `settings.xml`).
+* Increased Sonatype staging timeout to 15 min (from 5 min).
 
 2.1.0 - July 15, 2019
 ------------------------
