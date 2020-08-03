@@ -9,8 +9,8 @@ Parent Pom
     <img src="https://travis-ci.com/InscopeMetrics/parent-pom.svg?branch=master"
          alt="Travis Build">
 </a>
-<a href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.inscopemetrics.build%22%20a%3A%22parent-pom%22">
-    <img src="https://img.shields.io/maven-central/v/com.inscopemetrics.build/parent-pom.svg"
+<a href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22io.inscopemetrics.build%22%20a%3A%22parent-pom%22">
+    <img src="https://img.shields.io/maven-central/v/io.inscopemetrics.build/parent-pom.svg"
          alt="Maven Artifact">
 </a>
 
