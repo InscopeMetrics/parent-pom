@@ -23,7 +23,7 @@
   <name>Inscope Metrics Parent Pom</name>
   <description>Parent Pom for Inscope Metrics Projects.</description>
   <url>https://github.com/InscopeMetrics/parent-pom</url>
-  <version>2.2.2-SNAPSHOT</version>
+  <version>2.2.3-SNAPSHOT</version>
 
   <licenses>
     <license>
