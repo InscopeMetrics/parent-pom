@@ -12,7 +12,7 @@ env:
     - secure: kwYJw+Y7xYs8r6WhLLknDIC0R43ZDurfG47+LOH8n7ALEyisylgHyxT1EehjDb0hPh70phefeFnp/UKS4GZxq8vPz60f7isWj3M/6IPHl2CZrBAbzpzq1QTEQaO6fya4kw6MRR0vGyfvvkCHt3tCZOCSRqrny1itn77jCovEfiLTWOuznIetVS4k8j66pU4s8mYSEdyt2CLwDAkk2IqNUu7LgmhoPX3dQUWqgWnfR9BtHENCF0pYiOpX5h86hbf+9JZSJnKWdHl2KDs3pEIGBtGCMA9qTV0iUNYnU2rxoMpAzFHbiW/ztfiXZjcFgJM6hhoX3ocRVxrf3yhyQqX2aCWT7peYSRNuioZcpM6b0LHlGnYkGvupMw+XkU9h6NE/pMH8UVHZkgEZ6y18Cwa206KeaGvJo5BNEJIHEpgZzuahVGn3SXECR4qJxwv6N3DbSzgy4vL9hh6S9hz+NQk0qWx8NDOxL3be4B3PP6rLZF6qXZNRA1CWOhAzjNn3yXHaAsF5iOy/Ffz8ym+0pzbKJ9Hn5JtjSgwCUGyyvrUKCin45igiLfZcZq+cXZ3cTvWGZ550A/NcW0tt2Z09PBYGNorWkF7HOxsWXhzlhB77aRvfI1P2OF9VmqWOdH+6BZgThjC8lboX+2U6dd6G+FxR7r80Nu76rM0M2ZqQim3nE1U=
 install: true
 before_script:
-  - gpg --import ism.key
+  - gpg --batch --import ism.key
   - if [ \( -n "${TRAVIS_TAG}" \) -a  "${TRAVIS_PULL_REQUEST}" = "false" ]; then export TARGET="deploy -P release --settings settings.xml"; fi;
 script:
   - ./jdk-wrapper.sh ./mvnw clean ${TARGET} -U -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
