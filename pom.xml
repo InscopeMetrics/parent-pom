@@ -317,7 +317,7 @@
       <activation>
         <activeByDefault>false</activeByDefault>
         <property>
-          <name>!env.TRAVIS</name>
+          <name>!env.CI</name>
         </property>
       </activation>
       <build>
@@ -328,7 +328,7 @@
             <executions>
               <execution>
                 <goals>
-                  <!-- TODO(ville): This plugin updates goal does not work in Travis and is disabled with this profile. -->
+                  <!-- TODO(ville): This plugin updates goal does not work in CI (Travis, GHA or Jenkins) and is disabled with this profile. -->
                   <goal>display-plugin-updates</goal>
                 </goals>
               </execution>
