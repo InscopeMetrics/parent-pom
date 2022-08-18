@@ -65,47 +65,47 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <!-- JDK -->
-    <jdk.version>1.8.0-212</jdk.version>
+    <jdk.version>17.0.4</jdk.version>
 
     <!-- Maven Wrapper -->
-    <maven.version>3.6.3</maven.version>
+    <maven.version>3.8.4</maven.version>
     <maven.base.distribution.url>https://repo1.maven.org/maven2/org/apache/maven/apache-maven/</maven.base.distribution.url>
 
     <!-- Compiler Settings -->
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
 
     <!-- Dependency Versions -->
-    <build.resources.version>2.1.1</build.resources.version>
-    <checkstyle.version>8.41.1</checkstyle.version>
-    <spotbugs.version>4.2.2</spotbugs.version>
+    <build.resources.version>2.1.2-SNAPSHOT</build.resources.version>
+    <checkstyle.version>10.3.2</checkstyle.version>
+    <spotbugs.version>4.7.1</spotbugs.version>
 
     <!-- Plugin Versions -->
     <appassembler.maven.plugin.version>2.1.0</appassembler.maven.plugin.version>
-    <maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
+    <maven.buildnumber.plugin.version>3.0.0</maven.buildnumber.plugin.version>
     <maven.checkstyle.plugin.version>3.1.2</maven.checkstyle.plugin.version>
     <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
-    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-    <maven.dependency.plugin.version>3.1.2</maven.dependency.plugin.version>
-    <maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
-    <maven.enforcer.plugin.version>3.0.0-M3</maven.enforcer.plugin.version>
+    <maven.compiler.plugin.version>3.9.0</maven.compiler.plugin.version>
+    <maven.dependency.plugin.version>3.3.0</maven.dependency.plugin.version>
+    <maven.deploy.plugin.version>3.0.0-M2</maven.deploy.plugin.version>
+    <maven.enforcer.plugin.version>3.0.0</maven.enforcer.plugin.version>
     <maven.failsafe.plugin.version>3.0.0-M5</maven.failsafe.plugin.version>
-    <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
+    <maven.gpg.plugin.version>3.0.1</maven.gpg.plugin.version>
     <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
-    <maven.jacoco.plugin.version>0.8.6</maven.jacoco.plugin.version>
-    <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
-    <maven.javadoc.plugin.version>3.2.0</maven.javadoc.plugin.version>
-    <maven.project.info.reports.plugin.version>3.1.1</maven.project.info.reports.plugin.version>
-    <maven.release.plugin.version>3.0.0-M1</maven.release.plugin.version>
+    <maven.jacoco.plugin.version>0.8.8</maven.jacoco.plugin.version>
+    <maven.jar.plugin.version>3.2.2</maven.jar.plugin.version>
+    <maven.javadoc.plugin.version>3.3.1</maven.javadoc.plugin.version>
+    <maven.project.info.reports.plugin.version>3.1.2</maven.project.info.reports.plugin.version>
+    <maven.release.plugin.version>3.0.0-M5</maven.release.plugin.version>
     <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
-    <maven.site.plugin.version>3.9.1</maven.site.plugin.version>
+    <maven.site.plugin.version>3.10.0</maven.site.plugin.version>
     <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
-    <maven.spotbugs.plugin.version>4.2.2</maven.spotbugs.plugin.version>
+    <maven.spotbugs.plugin.version>4.5.3.0</maven.spotbugs.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
     <maven.surefire.report.plugin.version>3.0.0-M5</maven.surefire.report.plugin.version>
     <maven.versions.plugin.version>2.8.1</maven.versions.plugin.version>
     <maven.wrapper.plugin.version>0.0.5</maven.wrapper.plugin.version>
-    <nexus.staging.plugin.version>1.6.8</nexus.staging.plugin.version>
+    <nexus.staging.plugin.version>1.6.13</nexus.staging.plugin.version>
 
     <!-- Checkstyle -->
     <checkstyleExtraSuppressions>${project.build.directory}/build-resources/extra-checkstyle-suppressions.xml</checkstyleExtraSuppressions>
