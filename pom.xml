@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright 2018 Inscope Metrics Incorporated
   ~
@@ -153,6 +153,10 @@
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-deploy-plugin</artifactId>
           </plugin>
           <plugin>
@@ -174,52 +178,46 @@
             </executions>
           </plugin>
           <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>performanceTest</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>${maven.gpg.plugin.version}</version>
+            <artifactId>maven-surefire-plugin</artifactId>
             <executions>
               <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
+                <id>default-test</id>
+                <phase>test</phase>
                 <goals>
-                  <goal>sign</goal>
+                  <goal>test</goal>
                 </goals>
                 <configuration>
-                  <keyname>Inscope Metrics</keyname>
-                  <passphraseServerId>ism</passphraseServerId>
-                  <!-- Required by GHA
-                       See: https://github.com/samuelmeuli/action-maven-publish/issues/1
-                  -->
-                  <gpgArguments>
-                    <arg>--pinentry-mode</arg>
-                    <arg>loopback</arg>
-                  </gpgArguments>
+                  <includes>
+                    <include>**/*PT.java</include>
+                    <include>**/*PT.kt</include>
+                    <include>**/*TestPerf.java</include>
+                    <include>**/*TestPerf.kt</include>
+                  </includes>
+                  <systemPropertyVariables>
+                    <logback.configurationFile>${basedir}/src/test/resources/logback-perf.xml</logback.configurationFile>
+                  </systemPropertyVariables>
+                  <parallel combine.self="override" />
+                  <forkCount>1</forkCount>
+                  <reuseForks>false</reuseForks>
+                  <argLine>-XX:StartFlightRecording:dumponexit=true,filename=${basedir}/target/perf.profile.jfr,disk=true,name=perf -Xlog:jfr+startup=off</argLine>
                 </configuration>
               </execution>
             </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>${nexus.staging.plugin.version}</version>
-            <executions>
-              <execution>
-                <id>default-deploy</id>
-                <phase>deploy</phase>
-                <goals>
-                  <goal>deploy</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <serverId>ossrh</serverId>
-              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-              <autoReleaseAfterClose>true</autoReleaseAfterClose>
-              <stagingProgressTimeoutMinutes>15</stagingProgressTimeoutMinutes>
-              <keepStagingRepositoryOnFailure>true</keepStagingRepositoryOnFailure>
-              <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
-              <description>Project ${project.groupId}:${project.artifactId}:${project.version} at ${buildNumber}</description>
-            </configuration>
           </plugin>
         </plugins>
       </build>
@@ -342,6 +340,7 @@
   <build>
     <pluginManagement>
       <plugins>
+        <!-- Other plugins required by the build -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
@@ -350,9 +349,9 @@
             <showDeprecation>true</showDeprecation>
             <showWarnings>true</showWarnings>
             <compilerArgs>
-              <arg>-Werror</arg>
               <arg>-Xlint:all</arg>
               <arg>-Xlint:-processing</arg>
+              <arg>-Werror</arg>
             </compilerArgs>
           </configuration>
         </plugin>
@@ -421,6 +420,31 @@
           </configuration>
         </plugin>
         <plugin>
+          <groupId>org.apahe.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>${maven.gpg.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>sign-artifacts</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>sign</goal>
+              </goals>
+              <configuration>
+                <keyname>Inscope Metrics</keyname>
+                <passphraseServerId>ism</passphraseServerId>
+                <!-- Required by GHA
+                     See: https://github.com/samuelmeuli/action-maven-publish/issues/1
+                -->
+                <gpgArguments>
+                  <arg>--pinentry-mode</arg>
+                  <arg>loopback</arg>
+                </gpgArguments>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${maven.surefire.plugin.version}</version>
@@ -433,14 +457,15 @@
               </goals>
               <configuration>
                 <skipTests>${skipUnitTests}</skipTests>
-                <parallel>methods</parallel>
-                <threadCount>4</threadCount>
+                <parallel>all</parallel>
+                <threadCount>2</threadCount>
                 <perCoreThreadCount>true</perCoreThreadCount>
                 <trimStackTrace>false</trimStackTrace>
-                <argLine>${surefireArgLine} -Xms512m -ea -Duser.timezone="UTC"</argLine>
+                <argLine>@{argLine} -Xms512m -ea -Duser.timezone="UTC"</argLine>
                 <includes>
                   <include>**/Test*.java</include>
                   <include>**/*Test.java</include>
+                  <include>**/*Test.kt</include>
                   <include>**/*TestCase.java</include>
                 </includes>
                 <redirectTestOutputToFile>true</redirectTestOutputToFile>
@@ -472,12 +497,13 @@
           <configuration>
             <skipTests>${skipIntegrationTests}</skipTests>
             <parallel>all</parallel>
-            <perCoreThreadCount>true</perCoreThreadCount>
             <threadCount>2</threadCount>
+            <perCoreThreadCount>true</perCoreThreadCount>
             <trimStackTrace>false</trimStackTrace>
             <includes>
               <include>**/IT*.java</include>
               <include>**/*IT.java</include>
+              <include>**/*IT.kt</include>
               <include>**/*ITCase.java</include>
             </includes>
           </configuration>
@@ -510,6 +536,12 @@
               extra_suppressions_file=${checkstyleExtraSuppressions}
               header_file=${project.build.directory}/build-resources/al2.header
             </propertyExpansion>
+            <sourceDirectories>
+              <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+            </sourceDirectories>
+            <testSourceDirectories>
+              <testSourceDirectory>${project.build.testSourceDirectory}</testSourceDirectory>
+            </testSourceDirectories>
             <linkXRef>false</linkXRef>
           </configuration>
           <dependencies>
@@ -568,11 +600,11 @@
               </goals>
               <configuration>
                 <skip>${skipCoverage}</skip>
-                <propertyName>surefireArgLine</propertyName>
               </configuration>
             </execution>
             <execution>
               <id>default-report</id>
+              <phase>verify</phase>
               <goals>
                 <goal>report</goal>
               </goals>
@@ -622,6 +654,9 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>buildnumber-maven-plugin</artifactId>
           <version>${maven.buildnumber.plugin.version}</version>
+          <configuration>
+            <revisionOnScmFailure>UNKNOWN</revisionOnScmFailure>
+          </configuration>
           <executions>
             <execution>
               <phase>validate</phase>
@@ -630,9 +665,6 @@
               </goals>
             </execution>
           </executions>
-          <configuration>
-            <revisionOnScmFailure>UNKNOWN</revisionOnScmFailure>
-          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -648,6 +680,29 @@
           <version>${maven.deploy.plugin.version}</version>
           <configuration>
             <skip>${skipDeploy}</skip>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nexus-staging-maven-plugin</artifactId>
+          <version>${nexus.staging.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>default-deploy</id>
+              <phase>deploy</phase>
+              <goals>
+                <goal>deploy</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <serverId>ossrh</serverId>
+            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+            <stagingProgressTimeoutMinutes>15</stagingProgressTimeoutMinutes>
+            <keepStagingRepositoryOnFailure>true</keepStagingRepositoryOnFailure>
+            <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
+            <description>Project ${project.groupId}:${project.artifactId}:${project.version} at ${buildNumber}</description>
           </configuration>
         </plugin>
         <plugin>
@@ -679,6 +734,23 @@
               <configuration>
                 <quiet>true</quiet>
                 <skip>${skipJavaDoc}</skip>
+                <tags>
+                  <tag>
+                    <name>apiNote</name>
+                    <placement>a</placement>
+                    <head>API Note:</head>
+                  </tag>
+                  <tag>
+                    <name>implSpec</name>
+                    <placement>a</placement>
+                    <head>Implementation Requirements:</head>
+                  </tag>
+                  <tag>
+                    <name>implNote</name>
+                    <placement>a</placement>
+                    <head>Implementation Note:</head>
+                  </tag>
+                </tags>
               </configuration>
             </execution>
           </executions>
@@ -748,10 +820,18 @@
           <version>${maven.versions.plugin.version}</version>
           <executions>
             <execution>
+              <id>default-display-dependency-updates</id>
               <goals>
                 <goal>display-dependency-updates</goal>
               </goals>
-              <phase>verify</phase>
+              <phase>validate</phase>
+            </execution>
+            <execution>
+              <id>default-display-plugin-updates</id>
+              <goals>
+                <goal>display-plugin-updates</goal>
+              </goals>
+              <phase>validate</phase>
             </execution>
           </executions>
         </plugin>
@@ -773,10 +853,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -831,6 +907,10 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
