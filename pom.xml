@@ -65,10 +65,10 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <!-- JDK -->
-    <jdk.version>17.0.4</jdk.version>
+    <jdk.version>17.0.6</jdk.version>
 
     <!-- Maven Wrapper -->
-    <maven.version>3.8.4</maven.version>
+    <maven.version>3.8.7</maven.version>
     <maven.base.distribution.url>https://repo1.maven.org/maven2/org/apache/maven/apache-maven/</maven.base.distribution.url>
 
     <!-- Compiler Settings -->
