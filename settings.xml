@@ -5,10 +5,6 @@
       <username>${env.OSSRH_USER}</username>
       <password>${env.OSSRH_PASS}</password>
     </server>
-    <server>
-      <id>ism</id>
-      <passphrase>${env.GPG_PASS}</passphrase>
-    </server>
   </servers>
   <mirrors>
     <mirror>
