@@ -104,7 +104,7 @@
     <maven.surefire.report.plugin.version>3.2.5</maven.surefire.report.plugin.version>
     <maven.versions.plugin.version>2.16.2</maven.versions.plugin.version>
     <maven.wrapper.plugin.version>0.0.5</maven.wrapper.plugin.version>
-    <nexus.staging.plugin.version>1.6.13</nexus.staging.plugin.version>
+    <nexus.staging.plugin.version>1.7.0</nexus.staging.plugin.version>
 
     <!-- Checkstyle -->
     <checkstyleExtraSuppressions>${project.build.directory}/build-resources/extra-checkstyle-suppressions.xml</checkstyleExtraSuppressions>
