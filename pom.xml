@@ -104,7 +104,7 @@
     <maven.surefire.report.plugin.version>3.5.4</maven.surefire.report.plugin.version>
     <maven.versions.plugin.version>2.19.1</maven.versions.plugin.version>
     <maven.wrapper.plugin.version>0.0.5</maven.wrapper.plugin.version>
-    <nexus.staging.plugin.version>1.7.0</nexus.staging.plugin.version>
+    <central.publishing.plugin.version>0.8.0</central.publishing.plugin.version>
 
     <!-- Checkstyle -->
     <checkstyleExtraSuppressions>${project.build.directory}/build-resources/extra-checkstyle-suppressions.xml</checkstyleExtraSuppressions>
@@ -177,8 +177,8 @@
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
           </plugin>
         </plugins>
       </build>
@@ -657,26 +657,22 @@
           </configuration>
         </plugin>
         <plugin>
-          <groupId>org.sonatype.plugins</groupId>
-          <artifactId>nexus-staging-maven-plugin</artifactId>
-          <version>${nexus.staging.plugin.version}</version>
+          <groupId>org.sonatype.central</groupId>
+          <artifactId>central-publishing-maven-plugin</artifactId>
+          <version>${central.publishing.plugin.version}</version>
+	  <extensions>true</extensions>
           <executions>
             <execution>
               <id>default-deploy</id>
               <phase>deploy</phase>
               <goals>
-                <goal>deploy</goal>
+                <goal>publish</goal>
               </goals>
             </execution>
           </executions>
           <configuration>
-            <serverId>ossrh</serverId>
-            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-            <stagingProgressTimeoutMinutes>15</stagingProgressTimeoutMinutes>
-            <keepStagingRepositoryOnFailure>true</keepStagingRepositoryOnFailure>
-            <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
-            <description>Project ${project.groupId}:${project.artifactId}:${project.version} at ${buildNumber}</description>
+            <publishingServerId>central</publishingServerId>
+            <autoPublish>true</autoPublish>
           </configuration>
         </plugin>
         <plugin>
@@ -917,15 +913,4 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
-
-  <distributionManagement>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
 </project>

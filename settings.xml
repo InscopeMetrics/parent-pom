@@ -1,17 +1,9 @@
 <settings>
   <servers>
     <server>
-      <id>ossrh</id>
-      <username>${env.OSSRH_USER}</username>
-      <password>${env.OSSRH_PASS}</password>
+      <id>central</id>
+      <username>${env.CENTRAL_USER}</username>
+      <password>${env.CENTRAL_PASS}</password>
     </server>
   </servers>
-  <mirrors>
-    <mirror>
-      <id>maven-central</id>
-      <name>Maven Central</name>
-      <url>https://repo1.maven.org/maven2</url>
-      <mirrorOf>central</mirrorOf>
-    </mirror>
-  </mirrors>
 </settings>
